@@ -1,0 +1,175 @@
+/*
+            ****************************
+Write a program that can be used to calculate the taxes applied on an employee�s salary in
+Albania. By giving the employee�s Gross Salary, the program should calculate PIT (Personal
+Income Tax), Occupational Health Contributions, Employee Social Contributions and Net Salary.
+You should ask the user to enter the gross salary for each month of the previous year (2019),
+for each job he has done. By using User Defined Functions and Arrays in C++ Programming
+Language, you should calculate Net salary and taxes, for each month.
+According to the latest law in Albania, for employees that are paid by more than one employer,
+you should calculate PIT of the sum of all the salaries, on each month. After this, you should
+find the difference of this value, with the sum of PIT the employee has paid each month.
+
+
+*/
+
+
+#include<iostream>
+#include<string>
+using namespace std;
+
+//Global variable type double, inizialized = 0
+double total_Personal_Income_Tax = 0;
+
+// Functions prototype (declaration)
+void print(double salary);
+double Func_Personal_Income_Tax(double salary);
+double Occupational_Health_Contributions(double salary);
+double Social_Contributions(double salary);
+double Personal_Income_Tax_Charges(double total_Salary, double employer_Salary);
+
+
+int main()
+{
+//Array of type string to store 12 months
+string months[12] = { "January  ", "February  ", "March  ", "April  ", "May", "June  ", "July  ", "August  ", "September  ", "October  ", "November  ", "December  " };
+
+//Array of type double to insert jobs for 12 months
+double pay_Per_Month[12];
+//Input Jobs
+int NumberOfJobs;
+cout << "Enter number of Jobs:  ";
+cin >> NumberOfJobs;
+cout<<endl;
+
+// Two dimensonal Array to store job salary for 12 months and the user nr of Jobs.
+double Job_Salary[12][NumberOfJobs];  
+double employer_Personal_Income_Tax[NumberOfJobs];
+
+//Loop to print the payment for each month
+cout << "Enter payments for each month. \n" << endl;
+for (int x = 0; x < 12; ++x) {
+cout<<endl;
+cout << months[x] << endl;
+double total_Monthly_Pay = 0;
+cout<<"-----------\n";
+
+//For loop to print info results for eaach inputed Job
+for (int y = 0; y < NumberOfJobs; ++y) {
+double employer_Pay;
+cout << "Job: " << y + 1 <<endl;
+cout<<"Salary: ";
+cin >> employer_Pay;
+cout<<endl;
+
+//Two dimensional Array ro store salary for each month and job  
+Job_Salary[x][y] = employer_Pay;
+total_Monthly_Pay += employer_Pay;
+}
+pay_Per_Month[x] = total_Monthly_Pay;
+}
+cout << endl << endl;
+
+
+// loop to print each info result for each month
+for (int x = 0; x < 12; ++x) {
+
+cout << endl << months[x] <<endl;
+
+print(pay_Per_Month[x]);
+
+for (int y = 0; y < NumberOfJobs; ++y) {
+
+employer_Personal_Income_Tax[y] += Func_Personal_Income_Tax(Job_Salary[x][y]);
+}
+
+}
+
+//for loop to print  Total PIT, Employer PIT and Differnce 
+cout << endl << endl << "Total Persoanl Income Taxes: " << total_Personal_Income_Tax << endl;
+
+for (int y = 0; y < NumberOfJobs; ++y) {
+
+cout << "Employeer: " << y + 1 << " PIT: " << employer_Personal_Income_Tax[y] << endl;
+
+cout << "Difference: " << total_Personal_Income_Tax - employer_Personal_Income_Tax[y] ; //Find the difference of values
+
+cout<< endl; 
+
+}
+}
+
+void print(double salary) { //Void function to print the the datas
+double Personal_Income_Tax = Func_Personal_Income_Tax(salary);
+double social_Contributions = Social_Contributions(salary);
+double health_Contributions = Occupational_Health_Contributions(salary);
+double netSalary = salary - (Personal_Income_Tax + social_Contributions + health_Contributions);
+total_Personal_Income_Tax += Personal_Income_Tax;
+cout<<endl;
+
+//Prints the output
+cout<<endl;
+cout << "Gross Salary: " << salary<<" Leke\n"<<endl;
+cout << "Net Salary: " << netSalary <<" Leke\n"<< endl;
+cout << "PIT: " << Personal_Income_Tax <<" Leke\n"<< endl;
+cout << "Occupational Health Contributions: " << Occupational_Health_Contributions(salary) <<" Leke\n"<< endl;
+cout << "Social Contributions: " << Social_Contributions(salary)<<" Leke\n" << endl;
+cout<<"*********************************************\n";
+}
+
+// Functions definition
+
+double Func_Personal_Income_Tax(double salary) {  //Function to calculate personal income taxes
+
+double Personal_Income_Tax = 0;
+
+if (salary >= 0 && salary <= 30000) {
+
+Personal_Income_Tax = 0;
+}
+else if (salary <= 150000) {
+
+Personal_Income_Tax = (salary - 30000) * 0.13;
+}
+
+else {
+
+Personal_Income_Tax = (salary - 150000) * 0.23 + 120000 * 0.13;
+}
+
+return Personal_Income_Tax;  
+// Return statement
+}
+
+double Occupational_Health_Contributions(double salary) {  //Function to calculate Occupational Health Contributions
+
+return salary * 0.017;  
+// Return statement
+}
+
+double Social_Contributions(double salary) {  //Function to calculate socail contributions
+
+double social_Contributions = 0;
+
+if (salary <= 114670) {
+
+social_Contributions = salary * 0.095;
+}
+
+else {
+
+social_Contributions = 0;
+}
+
+return social_Contributions;  
+// Return statement
+}
+
+
+
+double Personal_Income_Tax_Charges(double total_Salary, double employer_Salary)  //Function to calculate Personal Income Tax Differences
+{
+
+return 0.0; // Return statement
+}
+
