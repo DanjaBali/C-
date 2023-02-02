@@ -1,0 +1,370 @@
+//Exercise 3 
+// ConsoleApplication1.cpp : Defines the entry point for the console application. 
+ 
+#include "stdafx.h" 
+ 
+#include <iostream> 
+#include <string> 
+ 
+using namespace std; 
+ 
+void AddQuestion();         // Void Function void ShowQuestions(); void welcomeMsg(); void ProffesorMenu(); 
+ 
+//structures with requred members. 
+struct Users 
+{ 
+ 
+ 	string username;  	string password; 
+}; 
+ 
+struct Proffesor 
+{ 
+ 
+ 	string username;  	string password; 
+}; 
+struct Student 
+{ 
+ 	string username;  	string password;  	double points; 
+}; 
+ 
+struct QuestionList 
+{ 
+ string question;  char  answer;  double points; 
+}; 
+ 
+Users arrAdminUsers[5]; 
+Proffesor* arrProffesorUsers = NULL; 
+Student* arrStudentUsers = NULL; 
+QuestionList* arrQuestions = NULL; 
+ 
+void insertItemInarrayProfessor(Proffesor profesor) 
+{ 
+ 	for(int i=0;i<sizeof(arrProffesorUsers);i++) 
+ 	{ 
+	 	if(arrProffesorUsers[i].username=="") 
+	 	{ 
+	 	 	arrProffesorUsers[i]=profesor; 
+	 	 	return; 
+	 	} 
+}
+}
+ 
+void insertItemInarrayStudent(Student student) 
+{ 
+ 	for(int i=0;i<sizeof(arrProffesorUsers);i++) 
+ 	{ 
+ 	 	if(arrStudentUsers[i].username=="") 
+ 	 	{ 
+ 	 	 	arrStudentUsers[i]=student; 
+ 	 	 	return; 
+ 	 	} 
+ 	} 
+//First login as admin with Username and Password "admin", then acess professor or student menu. 
+} 
+void AddUser(int usertype)   
+{ 
+ 	if(usertype==1) 
+ 	{ 
+ 	 	Proffesor u; 
+ 	 	cout<<"\nEnter Username of Profesor."<<endl;  
+ 	 	cin>>u.username; 
+ 	 	cout<<"\nEnter Password of Profesor."<<endl;  	cin>>u.password;  	if(arrProffesorUsers==NULL) 
+	 	{ 
+	 	 	arrProffesorUsers = new Proffesor[10]; 
+	 	} 
+insertItemInarrayProfessor(u); 
+ 	} 
+ 	else 
+ 	{ 
+ 	 	Student u; 
+ 	 	cout<<"\nEnter Username of Student."<<endl; 
+ 	 	cin>>u.username; 
+ 	 	cout<<"\nEnter Password of Student."<<endl; 
+ 	 	cin>>u.password;  	 	if(arrStudentUsers==NULL) 
+ 	 	{ 
+ 	 	 	arrStudentUsers = new Student[10]; 
+ 	 	} 
+ 	 	insertItemInarrayStudent(u); 
+ 	}   
+ 
+ 	welcomeMsg(); 
+} 
+ 
+void AdminMenu() 
+{ 
+ 	string answer="";  	cout<<"\nWellcome User Admin! "<<endl;  	cout<<"\nType 1 to add Proffesor Account."<<endl; cout<<"\nType 2 to add Student Account."<<endl; cout<<"\nType 0 Menu."<<endl; cin>>answer; 
+if(answer=="1") 
+{
+	 	AddUser(1); 
+} 
+else if(answer=="2") 
+{ 
+ 	 	AddUser(2); 
+ 	} 
+ 	else if (answer=="0") 
+ 	{ 
+ 	 	welcomeMsg(); 
+ 	} 
+ 	else  
+ 	{ 
+ 	 	AdminMenu(); 
+ 	} 
+} 
+ 
+bool checkuser(Users arrayUser[], string username, string password) 
+{ 
+ 	for(int i=0;i<5;i++) 
+ 	{ 
+ 	 	if(arrayUser[i].username==username && arrayUser[i].password==password) 
+ 	 	{ 
+ 	 	 	return true; 
+ 	 	} 
+ 	} 
+ 	return false; 
+} 
+bool checkuserStudent(Student arrayUser[], string username, string password) 
+{
+ 	for(int i=0;i<5;i++) 
+ 	{ 
+ 	 	if(arrayUser[i].username==username && arrayUser[i].password==password) 
+ 	 	{ 
+ 	 	 	return true; 
+ 	 	} 
+ 	} 
+ 	return false; 
+} 
+bool checkuserProfessor(Proffesor arrayUser[], string username, string password) 
+{ 
+ 	for(int i=0;i<5;i++) 
+ 	{ 
+ 	 	if(arrayUser[i].username==username && arrayUser[i].password==password) 
+ 	 	{ 
+ 	 	 	return true; 
+ 	 	} 
+ 	} 
+ 	return false; 
+} 
+void UserAdministrator() 
+{ 
+ 	string username="";  	string password="";  	cout<<"\nEnter username?"<<endl;  	cin>>username;  	cout<<"\nEnter Password?"<<endl;  	cin>>password;  if(checkuser(arrAdminUsers,username, password)) 
+{ 
+	 	AdminMenu(); 
+ 	} 
+ 	else 
+ 	{ 
+ 	 	cout<<"\nWrong Username/Password! "<<endl; 
+ 	 	UserAdministrator(); 
+ 	} 
+} 
+ 
+void printInDescending()  //Print whole list of students sorted by the score in descending order. 
+{ 
+ 	int temp; 
+ 	    for(int i=0; i<=10; i++) 
+            { 
+                for(int j=i+1; j<=10; j++) 
+                    { 
+ 	 	 	 	 	 	if(arrStudentUsers[i].points<arrStudentUsers[j].points) 
+                            { 
+ 	 	 	 	 	 	 	 	temp=arrStudentUsers[j].points; 
+                                arrStudentUsers[j].points=arrStudentUsers[i].points;                                 arrStudentUsers[i].points=temp; 
+                            } 
+                    } 
+                cout << arrStudentUsers[i].points << "\n"; 
+            } 
+}
+ 
+void PrintReport() 
+{ 
+ 
+ 	if(arrStudentUsers!=NULL) 
+ 	{ 
+ 	 	for(int i=0;i<sizeof(arrStudentUsers);i++) 
+ 	 	{ 
+ 
+   cout<<"\n Username:" + arrStudentUsers[i].username + " Points: " << arrStudentUsers[i].points <<endl; 
+ 	 	    printInDescending(); 
+ 
+ 	 	} 
+ 	} 
+ 	else 
+ 	{ 
+ 	 	cout<<"\nAdd a Student first! "<<endl; 
+ 
+ 	} 
+ 
+ 
+ 	ProffesorMenu();   //Proffesor Menu  
+} 
+ 
+void ProffesorMenu() 
+{ 
+string answer=""; cout<<"\nWellcome Proffesor! "<<endl; cout<<"\nType 1 to add Questions."<<endl; cout<<"\nType 2 to Print Reports."<<endl; cout<<"\nType 3 to Show Added Question."<<endl;  	cout<<"\nType 0 Menu."<<endl;  	cin>>answer; 
+ 
+ 	if(answer=="1") 
+ 	{ 
+ 	 	AddQuestion(); 
+ 	} 
+ 	else if(answer=="2") 
+ 	{ 
+ 	 	PrintReport(); 
+ 	} 
+ 	else if (answer=="3") 
+ 	{ 
+ 	 	ShowQuestions(); 
+ 	} 
+ 	else if (answer=="0") 
+ 	{ 
+ 	 	welcomeMsg(); 
+ 	} 
+else 
+{ 
+ 	 
+} 
+}
+ 
+void validateQuestion(int index,char answer) 
+{ 
+ 
+ 	if(arrQuestions[index].answer==answer) 
+ 	{ 
+ 	 	 
+ 	} 
+} 
+ 
+void StudentMenu()  //Student Menu 
+{ 
+ 	string answer="";  	cout<<"\nWellcome Student! "<<endl;  	cout<<"\nChoose question to answer."<<endl; 
+ 
+ 	cin>>answer; 
+ 
+ 	for(int i=0;i<sizeof(arrQuestions);i++) 
+ 	{ 
+ 
+ 	 	cout<<"\n Question No." + (i) << " " <<  arrQuestions[i].question  <<endl; 
+ 
+ 
+ 	} 
+ 
+ 	cout<<"\nSelect Question No?."<<endl; 
+cin>>answer; 
+}
+ 
+void insertItemInarray(QuestionList question) 
+{ 
+ 
+ 	for(int i=0;i<sizeof(arrQuestions);i++) 
+ 	{ 
+ 	 	if(arrQuestions[i].question=="") 
+ 	 	{ 
+ 	 	 	arrQuestions[i]=question; 
+ 	 	 	return; 
+ 	 	} 
+ 	} 
+ 
+} 
+ 
+ 
+ 
+ 
+void AddQuestion() //Question Menu 
+{ 
+ 	QuestionList question;  
+cout<<"\Enter the question! "<<endl; cin>>question.question; cout<<"\Enter Answer! "<<endl; cin>>question.answer; cout<<"\Enter Points! "<<endl; cin>>question.points; 
+ 	if(arrQuestions==NULL) 
+ 	{ 
+ 	 	arrQuestions = new QuestionList[20]; 
+ 	} 
+ 	insertItemInarray(question); 
+ 
+ 	cout<<"\Question added! "<<endl; 
+ 	ProffesorMenu(); 
+ 
+} 
+ 
+ 
+void ShowQuestions() 
+{ 
+ 
+ 	for(int i=0;i<sizeof(arrQuestions);i++) 
+ 	{ 
+ 
+ 	 	cout<<"\n Q:" + arrQuestions[i].question + " A:" + arrQuestions[i].answer <<endl; 
+ 
+ 	} 
+ 	ProffesorMenu(); 
+} 
+ 
+ 
+ 
+void UserProfessor() 
+{
+ 	string username="";  	string password="";  	cout<<"\nEnter username?"<<endl;  	cin>>username;  	cout<<"\nEnter Password?"<<endl;  	cin>>password;  
+ 
+ 	if(checkuserProfessor(arrProffesorUsers,username, password)) 
+ 	{ 
+ 	 	ProffesorMenu(); 
+ 	} 
+ 	else 
+ 	{ 
+ 	 	cout<<"\nWrong Username/Password! "<<endl; 
+ 	 	UserProfessor(); 
+ 	} 
+ 
+} 
+ 
+void welcomeMsg() //Invite user to login as administrator, professor or student. 
+{ 
+ 	cout<<"\nHello Welcome to login menu! "<<endl;  	cout<<"\nType 1 to login as an administrator."<<endl; cout<<"\nType 2 to login as a professor to add questions and print reports."<<endl;  cout<<"\nType 3 to login as a student, to take questions and answers."<<endl; 
+string usertype=""; cin>>usertype;  	if(usertype=="1") 
+ 	{ 
+ 
+ 	 	UserAdministrator();  
+ 
+ 	} 
+ 	else if (usertype=="2") 
+ 	{ 
+ 	 	if(arrProffesorUsers!=NULL) 
+ 	 	{ 
+ 	 	 	UserProfessor(); 
+ 	 	} 
+ 	 	else 
+ 	 	{ 
+ 	 	 	cout<<"\nAdd a Proffesor first! "<<endl; 
+ 	 	 	welcomeMsg(); 
+ 	 	} 
+ 
+ 	}else if(usertype=="3") 
+ 	{ 
+ 	 	if(arrStudentUsers!=NULL) 
+ 	 	{ 
+ 	 	 	UserProfessor(); 
+ 	 	} 
+	 	else 
+	 	{ 
+	 	 	cout<<"\nAdd a Student first! "<<endl; 
+	 	 	welcomeMsg(); 
+ 	}  	} 
+ 	else 
+ 	{ 
+ 	 	welcomeMsg(); 
+ 
+ 	} 
+ 
+} 
+ 
+int _tmain(int argc, _TCHAR* argv[]) 
+{ 
+ 	Users u; 
+ 
+ 	u.password="admin"; 
+ 	u.username="admin";  	arrAdminUsers[0]=u; 
+ 
+ 	bool stayOpen=true; 
+ 
+ 	//while (stayOpen) 
+ 	 
+ 	welcomeMsg(); 
+ 
+ 	return 0; 
+}
